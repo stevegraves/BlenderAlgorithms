@@ -1,10 +1,28 @@
 import bpy
 
-num = 2
-offset = 2
+class TestPanel(bpy.types.Panel):
+    bl_label = "TestPanel"
+    bl_idname = "PT_TestPanel"
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'UI'
+    bl_category = 'New Addon'
+    
+    def draw(self, context):
+        layout = self.layout
+        
+        row = layout.row()
+        row.label(text = "Sample Text", icon ='ORIENTATION_GIMBAL')
+        row = layout.row()
+        row.operator("mesh.primitive_cube_add")
+        row.operator("mesh.primitive_uv_sphere_add")
+        
+        
+def register():
+    bpy.utils.register_class(TestPanel)
+    
+def unregister():
+    bpy.utils.unregister_class(TestPanel)
+    
 
-while num > 0:
-    bpy.ops.mesh.primitive_cube_add(size=2, enter_editmode=False, align='WORLD', location=(offset, 0, 0), scale=(1, offset, offset))
-    bpy.context.object.keyframe_insert(data_path = "scale", frame = offset * 2)
-    num -= 1
-    offset += 2
+if __name__ == "__main__":
+    register()
